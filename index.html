@@ -3,27 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minesweeper Standalone</title>
+    <title>Minesweeper</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         :root {
             --columns: 16;
-            --primary-color: #4a4a4a;
-            --secondary-color: #f5f5f5;
+            --primary-color: #4a90e2;
+            --secondary-color: #f8f9fa;
             --border-color: #d3d3d3;
             --text-color: #333;
             --background-color: #fff;
             --cell-revealed: #e6e6e6;
             --cell-hover: #f0f0f0;
+            --button-gradient: linear-gradient(145deg, #f8f9fa, #e6e6e6);
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --cell-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --header-gradient: linear-gradient(135deg, #4a90e2, #5a5de8);
         }
 
         [data-theme="dark"] {
-            --primary-color: #6a6a6a;
-            --secondary-color: #2d2d2d;
+            --primary-color: #5a5de8;
+            --secondary-color: #2d3748;
             --border-color: #444;
             --text-color: #f5f5f5;
-            --background-color: #121212;
+            --background-color: #1a202c;
             --cell-revealed: #383838;
             --cell-hover: #444444;
+            --button-gradient: linear-gradient(145deg, #2d3748, #1a202c);
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --cell-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            --header-gradient: linear-gradient(135deg, #5a5de8, #7678ed);
         }
 
         * {
@@ -41,6 +50,7 @@
             align-items: center;
             padding: 20px;
             transition: background-color 0.3s, color 0.3s;
+            min-height: 100vh;
         }
 
         .container {
@@ -51,11 +61,29 @@
             flex-direction: column;
             align-items: center;
             gap: 20px;
+            background-color: var(--secondary-color);
+            border-radius: 12px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .header {
+            width: 100%;
+            padding: 15px;
+            background: var(--header-gradient);
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-bottom: 20px;
         }
 
         h1 {
-            color: var(--primary-color);
-            margin-bottom: 20px;
+            color: white;
+            text-align: center;
+            margin: 0;
+            font-size: 32px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
         }
 
         .game-controls {
@@ -66,13 +94,21 @@
 
         select, button {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
+            padding: 12px;
+            margin-bottom: 15px;
             border: 1px solid var(--border-color);
-            border-radius: 4px;
-            background-color: var(--secondary-color);
+            border-radius: 8px;
+            background: var(--button-gradient);
             color: var(--text-color);
             cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: var(--cell-box-shadow);
+        }
+
+        select:hover, button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
         }
 
         .game-stats {
@@ -84,65 +120,89 @@
         }
 
         .mines-counter, .timer {
-            background-color: var(--secondary-color);
-            padding: 10px;
-            border-radius: 4px;
+            background: var(--button-gradient);
+            padding: 12px;
+            border-radius: 8px;
             border: 1px solid var(--border-color);
-            width: 100px;
+            width: 120px;
             text-align: center;
+            font-weight: bold;
+            box-shadow: var(--cell-box-shadow);
         }
 
         .reset-button {
-            background-color: var(--secondary-color);
+            background: var(--button-gradient);
             border: 1px solid var(--border-color);
-            border-radius: 4px;
-            width: 50px;
-            height: 50px;
-            font-size: 24px;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 30px;
             cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--cell-box-shadow);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .reset-button:hover {
+            transform: scale(1.1);
         }
 
         .game-board {
             display: grid;
             grid-template-columns: repeat(var(--columns), 30px);
-            grid-gap: 2px;
+            grid-gap: 4px;
             background-color: var(--border-color);
             border: 3px solid var(--border-color);
-            border-radius: 4px;
+            border-radius: 8px;
             margin: 0 auto;
             width: fit-content;
+            padding: 8px;
+            box-shadow: var(--box-shadow);
         }
 
         .cell {
             width: 30px;
             height: 30px;
-            background-color: var(--secondary-color);
+            background: var(--button-gradient);
             display: flex;
             justify-content: center;
             align-items: center;
             font-weight: bold;
             cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            box-shadow: var(--cell-box-shadow);
         }
 
         .cell:hover:not(.revealed) {
-            background-color: var(--cell-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .cell.revealed {
             background-color: var(--cell-revealed);
+            background-image: none;
+            transform: none;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
             cursor: default;
         }
 
         .cell.flagged::before {
             content: '🚩';
+            font-size: 18px;
         }
 
         .cell.question::before {
             content: '?';
+            font-size: 18px;
+            color: var(--primary-color);
         }
 
         .cell.mine::before {
             content: '💣';
+            font-size: 18px;
         }
 
         .cell.exploded {
@@ -151,21 +211,24 @@
 
         .cell.wrong-flag::before {
             content: '❌';
+            font-size: 18px;
         }
 
         /* Numbers */
-        .cell.number-1 { color: blue; }
-        .cell.number-2 { color: green; }
-        .cell.number-3 { color: red; }
-        .cell.number-4 { color: navy; }
-        .cell.number-5 { color: brown; }
-        .cell.number-6 { color: teal; }
-        .cell.number-7 { color: black; }
-        .cell.number-8 { color: gray; }
+        .cell.number-1 { color: #3498db; font-weight: bold; }
+        .cell.number-2 { color: #2ecc71; font-weight: bold; }
+        .cell.number-3 { color: #e74c3c; font-weight: bold; }
+        .cell.number-4 { color: #9b59b6; font-weight: bold; }
+        .cell.number-5 { color: #e67e22; font-weight: bold; }
+        .cell.number-6 { color: #1abc9c; font-weight: bold; }
+        .cell.number-7 { color: #34495e; font-weight: bold; }
+        .cell.number-8 { color: #7f8c8d; font-weight: bold; }
 
         /* Theme Toggle */
         .theme-toggle {
-            margin-bottom: 15px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
             display: flex;
             align-items: center;
         }
@@ -174,7 +237,7 @@
             position: relative;
             display: inline-block;
             width: 60px;
-            height: 34px;
+            height: 30px;
             margin-left: 10px;
         }
 
@@ -182,6 +245,12 @@
             opacity: 0;
             width: 0;
             height: 0;
+        }
+
+        .theme-label {
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
         }
 
         .slider {
@@ -193,14 +262,14 @@
             bottom: 0;
             background-color: #ccc;
             transition: .4s;
-            border-radius: 34px;
+            border-radius: 30px;
         }
 
         .slider:before {
             position: absolute;
             content: "";
-            height: 26px;
-            width: 26px;
+            height: 22px;
+            width: 22px;
             left: 4px;
             bottom: 4px;
             background-color: white;
@@ -209,38 +278,70 @@
         }
 
         input:checked + .slider {
-            background-color: #2196F3;
+            background-color: #5a5de8;
         }
 
         input:checked + .slider:before {
-            transform: translateX(26px);
+            transform: translateX(30px);
+        }
+
+        .slider i {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            transition: opacity 0.3s ease;
+        }
+
+        .slider .fa-sun {
+            left: 8px;
+            color: #ff9800;
+            opacity: 1;
+        }
+
+        .slider .fa-moon {
+            right: 8px;
+            color: #5a5de8;
+            opacity: 0;
+        }
+
+        input:checked + .slider .fa-sun {
+            opacity: 0;
+        }
+
+        input:checked + .slider .fa-moon {
+            opacity: 1;
         }
 
         #debug-info {
-            display: none; /* Hide debug panel by default */
+            display: none !important; /* Force hide debug panel */
+            visibility: hidden;
+            height: 0;
+            overflow: hidden;
+            opacity: 0;
+        }
+
+        .footer {
             margin-top: 20px;
-            padding: 10px;
-            background-color: #f0f0f0;
-            border: 1px solid #ddd;
-            width: 80%;
-            max-width: 600px;
-            height: 200px;
-            overflow-y: auto;
-            font-family: monospace;
-            font-size: 12px;
+            text-align: center;
+            color: var(--text-color);
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Minesweeper</h1>
-        
-        <div class="theme-toggle">
-            <span>Dark Mode</span>
-            <label class="theme-switch">
-                <input type="checkbox" id="theme-toggle">
-                <span class="slider"></span>
-            </label>
+        <div class="header">
+            <h1>Minesweeper</h1>
+            <div class="theme-toggle">
+                <label class="theme-switch">
+                    <input type="checkbox" id="theme-toggle">
+                    <span class="slider">
+                        <i class="fas fa-sun"></i>
+                        <i class="fas fa-moon"></i>
+                    </span>
+                </label>
+            </div>
         </div>
         
         <div class="game-controls">
@@ -253,20 +354,25 @@
         
         <div class="game-stats">
             <div class="mines-counter">
-                Mines: <span id="mines-count">0</span>
+                <i class="fas fa-bomb"></i> <span id="mines-count">0</span>
             </div>
             <button id="reset-button" class="reset-button">
                 <span id="game-emoji">😀</span>
             </button>
             <div class="timer">
-                Time: <span id="timer">000</span>
+                <i class="fas fa-clock"></i> <span id="timer">000</span>
             </div>
         </div>
         
         <div id="game-board" class="game-board"></div>
+        
+        <div class="footer">
+            &copy; 2023 Minesweeper Game
+        </div>
     </div>
     
-    <div id="debug-info"></div>
+    <!-- Debug panel - completely hidden -->
+    <div id="debug-info" style="display:none !important;"></div>
     
     <script>
         // Constants
@@ -327,10 +433,7 @@
             }
             
             log(message) {
-                const debugInfo = document.getElementById('debug-info');
-                const timestamp = new Date().toLocaleTimeString();
-                debugInfo.innerHTML += `<div>[${timestamp}] ${message}</div>`;
-                debugInfo.scrollTop = debugInfo.scrollHeight;
+                // Disabled logging to prevent debug panel from showing
                 console.log(message);
             }
             
@@ -702,6 +805,14 @@
             const debugInfo = document.getElementById('debug-info');
             const themeToggle = document.getElementById('theme-toggle');
             
+            // Make sure debug panel is hidden
+            if (debugInfo) {
+                debugInfo.style.display = 'none';
+                debugInfo.style.visibility = 'hidden';
+                debugInfo.style.height = '0';
+                debugInfo.style.overflow = 'hidden';
+            }
+            
             // Theme toggle functionality
             themeToggle.addEventListener('change', function() {
                 if(this.checked) {
@@ -719,9 +830,6 @@
                 themeToggle.checked = true;
                 document.body.setAttribute('data-theme', 'dark');
             }
-            
-            // Clear debug info
-            debugInfo.innerHTML = '<div>Minesweeper Debug Log</div>';
             
             // Get initial difficulty
             const difficulty = difficultySelect.value;
@@ -747,15 +855,6 @@
             resetButton.addEventListener('click', () => {
                 game.resetGame();
             });
-            
-            // Log window dimensions
-            const logDimensions = () => {
-                const gameBoard = document.getElementById('game-board');
-                debugInfo.innerHTML += `<div>Window: ${window.innerWidth}×${window.innerHeight}, Board: ${gameBoard.offsetWidth}×${gameBoard.offsetHeight}</div>`;
-            };
-            
-            window.addEventListener('resize', logDimensions);
-            setTimeout(logDimensions, 500);
         });
     </script>
 </body>

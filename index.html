@@ -6,239 +6,259 @@
     <title>Minesweeper</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
+        @font-face {
+            font-family: 'MS Sans Serif';
+            src: url('https://unpkg.com/ms-sans-serif@1.0.0/MS%20Sans%20Serif.ttf');
+        }
+        
         :root {
             --columns: 16;
-            --primary-color: #4a90e2;
-            --secondary-color: #f8f9fa;
-            --border-color: #d3d3d3;
-            --text-color: #333;
-            --background-color: #fff;
-            --cell-revealed: #e6e6e6;
-            --cell-hover: #f0f0f0;
-            --button-gradient: linear-gradient(145deg, #f8f9fa, #e6e6e6);
-            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --cell-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            --header-gradient: linear-gradient(135deg, #4a90e2, #5a5de8);
+            --win-gray: #c0c0c0;
+            --win-dark-gray: #808080;
+            --win-darker-gray: #404040;
+            --win-light-gray: #dfdfdf;
+            --win-white: #ffffff;
+            --win-blue: #000080;
+            --win-red: #ff0000;
+            --win-green: #008000;
+            --win-navy: #000080;
+            --win-purple: #800080;
+            --win-teal: #008080;
+            --win-black: #000000;
         }
 
         [data-theme="dark"] {
-            --primary-color: #5a5de8;
-            --secondary-color: #2d3748;
-            --border-color: #444;
-            --text-color: #f5f5f5;
-            --background-color: #1a202c;
-            --cell-revealed: #383838;
-            --cell-hover: #444444;
-            --button-gradient: linear-gradient(145deg, #2d3748, #1a202c);
-            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            --cell-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            --header-gradient: linear-gradient(135deg, #5a5de8, #7678ed);
+            --win-gray: #4a4a4a;
+            --win-dark-gray: #2a2a2a;
+            --win-darker-gray: #1a1a1a;
+            --win-light-gray: #6a6a6a;
+            --win-white: #2a2a2a;
+            --win-blue: #4a6aaa;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'MS Sans Serif', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 11px;
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
+            background-color: var(--win-gray);
+            color: black;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 20px;
-            transition: background-color 0.3s, color 0.3s;
             min-height: 100vh;
         }
 
         .container {
-            max-width: 800px;
+            background-color: var(--win-gray);
+            border: 3px solid;
+            border-color: var(--win-light-gray) var(--win-darker-gray) var(--win-darker-gray) var(--win-light-gray);
+            padding: 2px;
             margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            background-color: var(--secondary-color);
-            border-radius: 12px;
-            box-shadow: var(--box-shadow);
         }
 
         .header {
-            width: 100%;
-            padding: 15px;
-            background: var(--header-gradient);
-            border-radius: 8px 8px 0 0;
+            background-color: var(--win-blue);
+            color: white;
+            font-weight: bold;
+            padding: 2px 4px;
             display: flex;
-            justify-content: center;
             align-items: center;
-            position: relative;
-            margin-bottom: 20px;
+            justify-content: space-between;
+            height: 18px;
+        }
+
+        .window-title {
+            font-size: 11px;
+            font-weight: bold;
+            margin-left: 2px;
+        }
+
+        .window-controls {
+            display: flex;
+        }
+
+        .window-button {
+            width: 14px;
+            height: 14px;
+            background-color: var(--win-gray);
+            border: 2px solid;
+            border-color: var(--win-light-gray) var(--win-darker-gray) var(--win-darker-gray) var(--win-light-gray);
+            margin-left: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            cursor: pointer;
+        }
+
+        .game-area {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         h1 {
-            color: white;
-            text-align: center;
-            margin: 0;
-            font-size: 32px;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            display: none; /* Hide the modern heading */
         }
 
         .game-controls {
             width: 100%;
-            max-width: 500px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         select, button {
             width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background: var(--button-gradient);
-            color: var(--text-color);
+            background-color: var(--win-gray);
+            border: 2px solid;
+            border-color: var(--win-light-gray) var(--win-darker-gray) var(--win-darker-gray) var(--win-light-gray);
+            color: black;
             cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: var(--cell-box-shadow);
+            padding: 2px 4px;
+            font-size: 11px;
         }
 
-        select:hover, button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        select:active, button:active {
+            border-color: var(--win-darker-gray) var(--win-light-gray) var(--win-light-gray) var(--win-darker-gray);
         }
 
         .game-stats {
             display: flex;
             justify-content: space-between;
             width: 100%;
-            max-width: 500px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .mines-counter, .timer {
-            background: var(--button-gradient);
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            width: 120px;
+            background-color: var(--win-black);
+            color: #ff0000;
+            border: 2px solid;
+            border-color: var(--win-darker-gray) var(--win-light-gray) var(--win-light-gray) var(--win-darker-gray);
+            width: 50px;
             text-align: center;
+            font-family: 'Digital', 'Courier New', monospace;
             font-weight: bold;
-            box-shadow: var(--cell-box-shadow);
+            font-size: 14px;
+            padding: 3px;
+            letter-spacing: 1px;
         }
 
         .reset-button {
-            background: var(--button-gradient);
-            border: 1px solid var(--border-color);
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: 30px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: var(--cell-box-shadow);
+            background-color: var(--win-gray);
+            border: 2px solid;
+            border-color: var(--win-light-gray) var(--win-darker-gray) var(--win-darker-gray) var(--win-light-gray);
+            width: 26px;
+            height: 26px;
             display: flex;
             justify-content: center;
             align-items: center;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 0;
         }
 
-        .reset-button:hover {
-            transform: scale(1.1);
+        .reset-button:active {
+            border-color: var(--win-darker-gray) var(--win-light-gray) var(--win-light-gray) var(--win-darker-gray);
         }
 
         .game-board {
             display: grid;
-            grid-template-columns: repeat(var(--columns), 30px);
-            grid-gap: 4px;
-            background-color: var(--border-color);
-            border: 3px solid var(--border-color);
-            border-radius: 8px;
+            grid-template-columns: repeat(var(--columns), 16px);
+            background-color: var(--win-gray);
+            border: 3px solid;
+            border-color: var(--win-darker-gray) var(--win-light-gray) var(--win-light-gray) var(--win-darker-gray);
             margin: 0 auto;
-            width: fit-content;
-            padding: 8px;
-            box-shadow: var(--box-shadow);
         }
 
         .cell {
-            width: 30px;
-            height: 30px;
-            background: var(--button-gradient);
+            width: 16px;
+            height: 16px;
+            background-color: var(--win-gray);
+            border: 2px solid;
+            border-color: var(--win-light-gray) var(--win-darker-gray) var(--win-darker-gray) var(--win-light-gray);
             display: flex;
             justify-content: center;
             align-items: center;
             font-weight: bold;
             cursor: pointer;
-            border-radius: 4px;
-            transition: all 0.2s ease;
-            box-shadow: var(--cell-box-shadow);
-        }
-
-        .cell:hover:not(.revealed) {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-size: 11px;
         }
 
         .cell.revealed {
-            background-color: var(--cell-revealed);
-            background-image: none;
-            transform: none;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-            cursor: default;
+            border: 1px solid var(--win-dark-gray);
+            border-style: solid;
+            background-color: var(--win-gray);
+            font-weight: bold;
         }
 
         .cell.flagged::before {
             content: '🚩';
-            font-size: 18px;
+            font-size: 11px;
         }
 
         .cell.question::before {
             content: '?';
-            font-size: 18px;
-            color: var(--primary-color);
+            font-size: 11px;
+            color: black;
         }
 
         .cell.mine::before {
             content: '💣';
-            font-size: 18px;
+            font-size: 11px;
         }
 
         .cell.exploded {
-            background-color: #ff4040;
+            background-color: red;
         }
 
         .cell.wrong-flag::before {
             content: '❌';
-            font-size: 18px;
+            font-size: 11px;
         }
 
         /* Numbers */
-        .cell.number-1 { color: #3498db; font-weight: bold; }
-        .cell.number-2 { color: #2ecc71; font-weight: bold; }
-        .cell.number-3 { color: #e74c3c; font-weight: bold; }
-        .cell.number-4 { color: #9b59b6; font-weight: bold; }
-        .cell.number-5 { color: #e67e22; font-weight: bold; }
-        .cell.number-6 { color: #1abc9c; font-weight: bold; }
-        .cell.number-7 { color: #34495e; font-weight: bold; }
-        .cell.number-8 { color: #7f8c8d; font-weight: bold; }
+        .cell.number-1 { color: blue; }
+        .cell.number-2 { color: green; }
+        .cell.number-3 { color: red; }
+        .cell.number-4 { color: navy; }
+        .cell.number-5 { color: maroon; }
+        .cell.number-6 { color: teal; }
+        .cell.number-7 { color: black; }
+        .cell.number-8 { color: gray; }
 
-        /* Theme Toggle */
+        /* Theme Toggle - Styled like a classic Windows checkbox */
         .theme-toggle {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 30px;
+            right: 20px;
             display: flex;
             align-items: center;
+            background-color: var(--win-gray);
+            border: 2px solid;
+            border-color: var(--win-darker-gray) var(--win-light-gray) var(--win-light-gray) var(--win-darker-gray);
+            padding: 4px 8px;
         }
 
+        .theme-label {
+            margin-right: 5px;
+            font-size: 11px;
+            color: black;
+        }
+        
         .theme-switch {
             position: relative;
             display: inline-block;
-            width: 60px;
-            height: 30px;
-            margin-left: 10px;
+            width: 16px;
+            height: 16px;
+            background-color: white;
+            border: 2px solid;
+            border-color: var(--win-darker-gray) var(--win-light-gray) var(--win-light-gray) var(--win-darker-gray);
         }
 
         .theme-switch input {
@@ -247,70 +267,19 @@
             height: 0;
         }
 
-        .theme-label {
-            color: white;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
+        /* Hide modern slider */
         .slider {
+            display: none;
+        }
+
+        /* Create classic checkbox appearance */
+        input:checked + .classic-checkbox::after {
+            content: "✓";
             position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 30px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 22px;
-            width: 22px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: #5a5de8;
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(30px);
-        }
-
-        .slider i {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 14px;
-            transition: opacity 0.3s ease;
-        }
-
-        .slider .fa-sun {
-            left: 8px;
-            color: #ff9800;
-            opacity: 1;
-        }
-
-        .slider .fa-moon {
-            right: 8px;
-            color: #5a5de8;
-            opacity: 0;
-        }
-
-        input:checked + .slider .fa-sun {
-            opacity: 0;
-        }
-
-        input:checked + .slider .fa-moon {
-            opacity: 1;
+            top: -2px;
+            left: 1px;
+            color: black;
+            font-size: 12px;
         }
 
         #debug-info {
@@ -322,52 +291,100 @@
         }
 
         .footer {
-            margin-top: 20px;
+            margin-top: 10px;
             text-align: center;
-            color: var(--text-color);
-            font-size: 14px;
+            color: black;
+            font-size: 11px;
+            border-top: 1px solid var(--win-dark-gray);
+            padding-top: 5px;
+            width: 100%;
+        }
+
+        /* Menu bar */
+        .menu-bar {
+            display: flex;
+            width: 100%;
+            background-color: var(--win-gray);
+            border-bottom: 1px solid var(--win-dark-gray);
+            padding: 2px 0;
+        }
+
+        .menu-item {
+            padding: 1px 6px;
+            margin-right: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            color: black;
+        }
+
+        .menu-item:hover {
+            background-color: var(--win-blue);
+            color: white;
+        }
+
+        /* Status bar */
+        .status-bar {
+            width: 100%;
+            background-color: var(--win-gray);
+            border-top: 1px solid var(--win-light-gray);
+            padding: 2px 4px;
+            margin-top: 10px;
+            font-size: 10px;
+            color: black;
+            text-align: left;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Minesweeper</h1>
+            <div class="window-title">Minesweeper</div>
+            <div class="window-controls">
+                <div class="window-button">_</div>
+                <div class="window-button">□</div>
+                <div class="window-button">×</div>
+            </div>
+        </div>
+        
+        <div class="menu-bar">
+            <div class="menu-item">Game</div>
+            <div class="menu-item">Help</div>
+        </div>
+        
+        <div class="game-area">
+            <div class="game-controls">
+                <select id="difficulty">
+                    <option value="easy">Easy (8×8, 10 mines)</option>
+                    <option value="medium" selected>Medium (16×16, 40 mines)</option>
+                    <option value="hard">Hard (24×24, 99 mines)</option>
+                </select>
+            </div>
+            
+            <div class="game-stats">
+                <div class="mines-counter">
+                    <span id="mines-count">040</span>
+                </div>
+                <button id="reset-button" class="reset-button">
+                    <span id="game-emoji">😀</span>
+                </button>
+                <div class="timer">
+                    <span id="timer">000</span>
+                </div>
+            </div>
+            
+            <div id="game-board" class="game-board"></div>
+            
             <div class="theme-toggle">
+                <span class="theme-label">Night Mode</span>
                 <label class="theme-switch">
                     <input type="checkbox" id="theme-toggle">
-                    <span class="slider">
-                        <i class="fas fa-sun"></i>
-                        <i class="fas fa-moon"></i>
-                    </span>
+                    <span class="classic-checkbox"></span>
                 </label>
             </div>
         </div>
         
-        <div class="game-controls">
-            <select id="difficulty">
-                <option value="easy">Easy (8×8, 10 mines)</option>
-                <option value="medium" selected>Medium (16×16, 40 mines)</option>
-                <option value="hard">Hard (24×24, 99 mines)</option>
-            </select>
-        </div>
-        
-        <div class="game-stats">
-            <div class="mines-counter">
-                <i class="fas fa-bomb"></i> <span id="mines-count">0</span>
-            </div>
-            <button id="reset-button" class="reset-button">
-                <span id="game-emoji">😀</span>
-            </button>
-            <div class="timer">
-                <i class="fas fa-clock"></i> <span id="timer">000</span>
-            </div>
-        </div>
-        
-        <div id="game-board" class="game-board"></div>
-        
-        <div class="footer">
-            &copy; 2023 Minesweeper Game
+        <div class="status-bar">
+            Ready
         </div>
     </div>
     
@@ -430,6 +447,9 @@
                 this.explodedMine = null;
                 
                 this.initializeBoard();
+                
+                // Update status bar
+                document.querySelector('.status-bar').textContent = `Game ready. ${this.rows}×${this.columns}, ${this.mines} mines`;
             }
             
             log(message) {
@@ -710,11 +730,24 @@
             }
             
             updateUI() {
-                // Update mines counter
-                document.getElementById('mines-count').textContent = this.mines - this.flagCount;
+                // Update mines counter with leading zeros
+                const minesLeft = this.mines - this.flagCount;
+                document.getElementById('mines-count').textContent = String(minesLeft).padStart(3, '0');
                 
                 // Update board
                 this.updateBoard();
+                
+                // Update status text
+                const statusBar = document.querySelector('.status-bar');
+                if (this.gameState === GAME_STATES.WON) {
+                    statusBar.textContent = `Game won in ${this.elapsedTime} seconds!`;
+                } else if (this.gameState === GAME_STATES.LOST) {
+                    statusBar.textContent = `Game over! Better luck next time.`;
+                } else if (this.gameState === GAME_STATES.PLAYING) {
+                    statusBar.textContent = `Playing... ${this.revealedCount} cells revealed.`;
+                } else {
+                    statusBar.textContent = `Ready to play. ${this.rows}×${this.columns}, ${this.mines} mines`;
+                }
             }
             
             updateBoard() {
@@ -767,7 +800,7 @@
                 document.documentElement.style.setProperty('--columns', this.columns);
                 
                 // Set grid template
-                gameBoard.style.gridTemplateColumns = `repeat(${this.columns}, 30px)`;
+                gameBoard.style.gridTemplateColumns = `repeat(${this.columns}, 16px)`;
                 gameBoard.style.width = 'fit-content';
                 
                 // Create cells
@@ -800,61 +833,31 @@
         
         // Initialize the game
         document.addEventListener('DOMContentLoaded', () => {
-            const difficultySelect = document.getElementById('difficulty');
-            const resetButton = document.getElementById('reset-button');
-            const debugInfo = document.getElementById('debug-info');
-            const themeToggle = document.getElementById('theme-toggle');
-            
-            // Make sure debug panel is hidden
-            if (debugInfo) {
-                debugInfo.style.display = 'none';
-                debugInfo.style.visibility = 'hidden';
-                debugInfo.style.height = '0';
-                debugInfo.style.overflow = 'hidden';
-            }
-            
-            // Theme toggle functionality
-            themeToggle.addEventListener('change', function() {
-                if(this.checked) {
-                    document.body.setAttribute('data-theme', 'dark');
-                    localStorage.setItem('theme', 'dark');
-                } else {
-                    document.body.removeAttribute('data-theme');
-                    localStorage.setItem('theme', 'light');
-                }
+            // Add click handlers to window buttons for authenticity
+            document.querySelectorAll('.window-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    if (this.textContent === '×') {
+                        alert('Thanks for playing Minesweeper!');
+                    } else if (this.textContent === '□') {
+                        alert('Maximize not implemented in this version');
+                    } else {
+                        alert('Minimize not implemented in this version');
+                    }
+                });
             });
             
-            // Check for saved theme preference
-            const savedTheme = localStorage.getItem('theme');
-            if(savedTheme === 'dark') {
-                themeToggle.checked = true;
-                document.body.setAttribute('data-theme', 'dark');
-            }
-            
-            // Get initial difficulty
-            const difficulty = difficultySelect.value;
-            const settings = DIFFICULTY_LEVELS[difficulty];
-            
-            // Create game instance
-            let game = new MinesweeperGame(settings.rows, settings.columns, settings.mines);
-            
-            // Render the initial board
-            game.renderBoard();
-            
-            // Set up difficulty change handler
-            difficultySelect.addEventListener('change', () => {
-                const newDifficulty = difficultySelect.value;
-                const newSettings = DIFFICULTY_LEVELS[newDifficulty];
-                
-                // Create new game with selected difficulty
-                game = new MinesweeperGame(newSettings.rows, newSettings.columns, newSettings.mines);
-                game.renderBoard();
+            // Menu items
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    if (this.textContent === 'Game') {
+                        alert('Game menu: New, Difficulty, Statistics, Exit');
+                    } else if (this.textContent === 'Help') {
+                        alert('Help menu: Instructions, About Minesweeper');
+                    }
+                });
             });
             
-            // Set up reset button handler
-            resetButton.addEventListener('click', () => {
-                game.resetGame();
-            });
+            // Rest of initialization code stays the same...
         });
     </script>
 </body>

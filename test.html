@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minesweeper Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(10, 30px);
+            grid-gap: 2px;
+            background-color: #999;
+            border: 3px solid #999;
+            margin: 20px auto;
+            width: fit-content;
+        }
+        
+        .cell {
+            width: 30px;
+            height: 30px;
+            background-color: #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .revealed {
+            background-color: #eee;
+        }
+        
+        .flagged::before {
+            content: '🚩';
+        }
+        
+        .mine::before {
+            content: '💣';
+        }
+        
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        
+        #debug-info {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            width: 80%;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Minesweeper Test Page</h1>
+    
+    <div>
+        <button id="create-board-btn">Create 10×10 Board</button>
+        <button id="reset-btn">Reset</button>
+    </div>
+    
+    <div id="game-board" class="game-board"></div>
+    
+    <div id="debug-info"></div>
+    
+    <script>
+        // Simple Minesweeper test implementation
+        document.addEventListener('DOMContentLoaded', function() {
+            const gameBoard = document.getElementById('game-board');
+            const createBoardBtn = document.getElementById('create-board-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const debugInfo = document.getElementById('debug-info');
+            
+            // Log initial state
+            debugInfo.innerHTML = `
+                <p>Window location: ${window.location.href}</p>
+                <p>Game board exists: ${!!gameBoard}</p>
+                <p>Game board dimensions: ${gameBoard.offsetWidth}x${gameBoard.offsetHeight}</p>
+            `;
+            
+            // Create board function
+            function createBoard(rows, cols) {
+                // Clear the board
+                gameBoard.innerHTML = '';
+                
+                // Set grid template columns
+                gameBoard.style.gridTemplateColumns = `repeat(${cols}, 30px)`;
+                
+                // Create cells
+                for (let row = 0; row < rows; row++) {
+                    for (let col = 0; col < cols; col++) {
+                        const cell = document.createElement('div');
+                        cell.className = 'cell';
+                        cell.dataset.row = row;
+                        cell.dataset.col = col;
+                        
+                        // Add event listeners
+                        cell.addEventListener('click', function() {
+                            cell.classList.add('revealed');
+                            
+                            // Random chance to be a mine
+                            if (Math.random() < 0.1) {
+                                cell.classList.add('mine');
+                            }
+                            
+                            logAction(`Clicked cell at [${row}, ${col}]`);
+                        });
+                        
+                        cell.addEventListener('contextmenu', function(e) {
+                            e.preventDefault();
+                            cell.classList.toggle('flagged');
+                            logAction(`Flagged cell at [${row}, ${col}]`);
+                        });
+                        
+                        gameBoard.appendChild(cell);
+                    }
+                }
+                
+                // Log board creation
+                logAction(`Created board with ${rows}×${cols} cells`);
+                logAction(`Board dimensions: ${gameBoard.offsetWidth}x${gameBoard.offsetHeight}`);
+            }
+            
+            // Log action to debug info
+            function logAction(message) {
+                const timestamp = new Date().toLocaleTimeString();
+                debugInfo.innerHTML += `<p>[${timestamp}] ${message}</p>`;
+                
+                // Scroll to bottom
+                debugInfo.scrollTop = debugInfo.scrollHeight;
+            }
+            
+            // Set up event listeners
+            createBoardBtn.addEventListener('click', function() {
+                createBoard(10, 10);
+            });
+            
+            resetBtn.addEventListener('click', function() {
+                gameBoard.innerHTML = '';
+                debugInfo.innerHTML = '<p>Board reset</p>';
+            });
+            
+            // Create initial board
+            createBoard(10, 10);
+        });
+    </script>
+</body>
+</html> 

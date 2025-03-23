@@ -4,7 +4,7 @@ A classic Minesweeper game built with HTML, CSS, and vanilla JavaScript.
 
 ## Demo
 
-You can play the game here: [Minesweeper Game](https://yourusername.github.io/minesweeper/)
+You can play the game here: [Minesweeper Game](https://squirtgunhero.github.io/minesweeper/)
 
 ## Game Features
 
@@ -73,7 +73,7 @@ Follow these steps to get the game working correctly on GitHub Pages:
    git add .
    git commit -m "Initial commit"
    git branch -M main
-   git remote add origin https://github.com/yourusername/minesweeper.git
+   git remote add origin https://github.com/squirtgunhero/minesweeper.git
    git push -u origin main
    ```
 

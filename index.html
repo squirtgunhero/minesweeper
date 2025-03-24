@@ -417,6 +417,21 @@
             font-size: 12px;
         }
 
+        .desktop-icon:first-child img {
+            content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAHJJREFUOI3t0rEKQVEcx/HPvYqSgcXkBUwGk8Eq5QXMBoPJG1h4AYvVYDZ7A4PBH4vlDhaTQe5AKeXqf07ndM7p1/mdvt/zPd/zPf0UZbhBhAYWGGGLGu7oYYgzPOzQxhpHzNHEBSWMccIUFbxwwwQFfPQGXqMZIYZgXDYAAAAASUVORK5CYII=');
+        }
+
+        /* Desktop Icons */
+        .desktop-icons {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            z-index: 1;
+        }
+
         .desktop-icon {
             display: flex;
             flex-direction: column;
@@ -427,11 +442,17 @@
             padding: 2px;
         }
 
+        .desktop-icon img {
+            width: 32px;
+            height: 32px;
+            image-rendering: pixelated;
+            margin-bottom: 4px;
+        }
+
         .desktop-icon-label {
             color: white;
             font-size: 11px;
             text-align: center;
-            margin-top: 4px;
             text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
             line-height: 1.2;
         }
@@ -447,26 +468,26 @@
     </style>
 </head>
 <body>
-    <!-- Windows 95 Desktop Icons -->
-    <div class="desktop-icons" style="position: fixed; top: 10px; left: 10px; display: flex; flex-direction: column; gap: 30px; z-index: 10;">
+    <!-- Desktop Icons -->
+    <div class="desktop-icons">
         <div class="desktop-icon">
-            <img src="icons/my-computer.png" alt="My Computer" style="width: 32px; height: 32px; image-rendering: pixelated;">
+            <img alt="My Computer">
             <div class="desktop-icon-label">My Computer</div>
         </div>
         <div class="desktop-icon">
-            <img src="icons/network.png" alt="Network" style="width: 32px; height: 32px; image-rendering: pixelated;">
+            <img src="icons/network.png" alt="Network">
             <div class="desktop-icon-label">Network<br>Neighborhood</div>
         </div>
         <div class="desktop-icon">
-            <img src="icons/inbox.png" alt="Inbox" style="width: 32px; height: 32px; image-rendering: pixelated;">
+            <img src="icons/inbox.png" alt="Inbox">
             <div class="desktop-icon-label">Inbox</div>
         </div>
         <div class="desktop-icon">
-            <img src="icons/recycle-bin.png" alt="Recycle Bin" style="width: 32px; height: 32px; image-rendering: pixelated;">
+            <img src="icons/recycle-bin.png" alt="Recycle Bin">
             <div class="desktop-icon-label">Recycle Bin</div>
         </div>
         <div class="desktop-icon">
-            <img src="icons/briefcase.png" alt="Briefcase" style="width: 32px; height: 32px; image-rendering: pixelated;">
+            <img src="icons/briefcase.png" alt="Briefcase">
             <div class="desktop-icon-label">My Briefcase</div>
         </div>
     </div>

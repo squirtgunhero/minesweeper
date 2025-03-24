@@ -188,13 +188,14 @@
             border-color: var(--win-dark-gray) var(--win-white) var(--win-white) var(--win-dark-gray);
             margin: 0 3px 3px 3px;
             padding: 0;
+            width: fit-content;
         }
 
         .cell {
             width: var(--cell-size);
             height: var(--cell-size);
             background-color: var(--win-gray);
-            border: 1.5px solid;
+            border: 1px solid;
             border-color: var(--win-white) var(--win-darker-gray) var(--win-darker-gray) var(--win-white);
             display: flex;
             justify-content: center;
@@ -205,6 +206,11 @@
             padding: 0;
             margin: 0;
             line-height: 1;
+            box-sizing: border-box;
+            min-width: var(--cell-size);
+            min-height: var(--cell-size);
+            max-width: var(--cell-size);
+            max-height: var(--cell-size);
         }
 
         .cell.revealed {
@@ -588,7 +594,7 @@
                 this.rows = rows;
                 this.columns = columns;
                 this.mines = mines;
-                this.cellSize = 24; // Set cell size to match CSS variable
+                this.cellSize = 16; // Changed from 24 to 16 to match CSS
                 
                 this.board = [];
                 this.visible = [];

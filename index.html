@@ -173,11 +173,22 @@
             cursor: pointer;
             padding: 0;
             margin: 0 6px;
+            position: relative;
         }
         
         .reset-button:active {
             border-style: inset;
             border-color: var(--win-darker-gray) var(--win-light-gray) var(--win-light-gray) var(--win-darker-gray);
+        }
+
+        .reset-button::before {
+            content: "☺";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 13px;
+            line-height: 1;
         }
 
         .game-board {
@@ -189,13 +200,15 @@
             margin: 0 3px 3px 3px;
             padding: 0;
             width: fit-content;
+            gap: 0;
         }
 
         .cell {
             width: var(--cell-size);
             height: var(--cell-size);
             background-color: var(--win-gray);
-            border: 1px solid;
+            border-width: 2px;
+            border-style: outset;
             border-color: var(--win-white) var(--win-darker-gray) var(--win-darker-gray) var(--win-white);
             display: flex;
             justify-content: center;
@@ -207,10 +220,7 @@
             margin: 0;
             line-height: 1;
             box-sizing: border-box;
-            min-width: var(--cell-size);
-            min-height: var(--cell-size);
-            max-width: var(--cell-size);
-            max-height: var(--cell-size);
+            position: relative;
         }
 
         .cell.revealed {
@@ -220,85 +230,65 @@
             font-weight: bold;
         }
 
-        .cell.flagged::before {
-            content: "";
-            width: 60%;
-            height: 60%;
-            background-color: red;
-            clip-path: polygon(20% 100%, 20% 40%, 0 40%, 50% 0, 100% 40%, 80% 40%, 80% 100%);
-            position: absolute;
-        }
-
-        .cell.question::before {
-            content: "?";
-            font-size: 16px;
-            font-weight: bold;
-            color: black;
-        }
-
         .cell.mine {
-            position: relative;
             background-color: var(--win-gray);
         }
         
         .cell.mine::before {
             content: "";
-            width: 45%;
-            height: 45%;
+            width: 8px;
+            height: 8px;
             background-color: black;
             border-radius: 50%;
             position: absolute;
-            top: 27.5%;
-            left: 27.5%;
-            z-index: 1;
-        }
-        
-        .cell.mine::after {
-            content: "";
-            position: absolute;
-            width: 80%;
-            height: 80%;
-            top: 10%;
-            left: 10%;
-            background:
-                /* Horizontal spike */
-                linear-gradient(to right, transparent 46%, black 46%, black 54%, transparent 54%),
-                /* Vertical spike */
-                linear-gradient(to bottom, transparent 46%, black 46%, black 54%, transparent 54%),
-                /* Diagonal spike 1 */
-                linear-gradient(45deg, transparent 47%, black 47%, black 53%, transparent 53%),
-                /* Diagonal spike 2 */
-                linear-gradient(-45deg, transparent 47%, black 47%, black 53%, transparent 53%);
-            z-index: 0;
-        }
-        
-        .cell.exploded {
-            background-color: red !important;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
-        .cell.wrong-flag::before {
+        .cell.flagged::before {
             content: "";
-            width: 60%;
-            height: 60%;
-            background-color: red;
-            clip-path: polygon(20% 100%, 20% 40%, 0 40%, 50% 0, 100% 40%, 80% 40%, 80% 100%);
             position: absolute;
+            top: 2px;
+            left: 3px;
+            width: 0;
+            height: 0;
+            border-left: 4px solid red;
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
         }
-        
-        .cell.wrong-flag::after {
-            content: "×";
-            color: black;
-            font-size: 18px;
-            font-weight: bold;
+
+        .cell.flagged::after {
+            content: "";
             position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 1px;
+            height: 7px;
+            background-color: black;
+        }
+
+        .cell.question {
+            position: relative;
+        }
+
+        .cell.question::before {
+            content: "?";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 11px;
+            font-weight: bold;
+            color: black;
         }
 
         /* Numbers */
         .cell.number-1 { color: blue; }
         .cell.number-2 { color: green; }
         .cell.number-3 { color: red; }
-        .cell.number-4 { color: navy; }
-        .cell.number-5 { color: maroon; }
+        .cell.number-4 { color: darkblue; }
+        .cell.number-5 { color: darkred; }
         .cell.number-6 { color: teal; }
         .cell.number-7 { color: black; }
         .cell.number-8 { color: gray; }

@@ -478,7 +478,7 @@
     </div>
 
     <!-- System Tray with Clock -->
-    <div class="system-clock">8:25 PM</div>
+    <div class="system-clock" id="system-clock">8:25 PM</div>
     <div class="volume-icon">🔊</div>
 
     <div class="container">
@@ -543,6 +543,22 @@
     </div>
     
     <script>
+        // Update system clock
+        function updateClock() {
+            const clock = document.getElementById('system-clock');
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            const displayHours = hours % 12 || 12; // Convert to 12-hour format
+            const displayMinutes = minutes.toString().padStart(2, '0');
+            clock.textContent = `${displayHours}:${displayMinutes} ${ampm}`;
+        }
+
+        // Update clock immediately and then every minute
+        updateClock();
+        setInterval(updateClock, 60000);
+
         // Constants
         const GAME_STATES = {
             NEW: 'new',

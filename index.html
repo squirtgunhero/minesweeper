@@ -365,16 +365,24 @@
         }
 
         /* Windows 95 icon styles */
-        .my-computer-icon,
-        .network-icon,
-        .inbox-icon,
-        .recycle-bin-icon,
-        .briefcase-icon,
-        .msn-icon,
-        .netscape-icon,
-        .netscape-icon::before,
-        .internet-globe {
-            /* No styles here - all moved to desktop-icons.css */
+        .icon-mycomputer {
+            background-image: url('data:image/png;base64,...') !important;
+        }
+
+        .icon-network {
+            background-image: url('data:image/png;base64,...') !important;
+        }
+
+        .icon-inbox {
+            background-image: url('data:image/png;base64,...') !important;
+        }
+
+        .icon-recycle {
+            background-image: url('data:image/png;base64,...') !important;
+        }
+
+        .icon-briefcase {
+            background-image: url('data:image/png;base64,...') !important;
         }
 
         /* Add proper footer styling */
@@ -407,8 +415,9 @@
 <body>
     <!-- Windows 95 Desktop Icons -->
     <div class="desktop-icons" style="position: fixed; top: 10px; left: 10px; display: flex; flex-direction: column; gap: 30px; z-index: 10;">
-        <div class="desktop-icon" style="display: flex; flex-direction: column; align-items: center; width: 64px; cursor: pointer;">
-            <img src="icons/my-computer.png" alt="My Computer" style="width: 64px; height: 64px;">
+        <div class="desktop-icon">
+            <div class="desktop-icon-img icon-mycomputer"></div>
+            <div class="desktop-icon-label">My Computer</div>
         </div>
         <div class="desktop-icon" style="display: flex; flex-direction: column; align-items: center; width: 64px; cursor: pointer;">
             <img src="icons/network.png" alt="Network" style="width: 64px; height: 64px;">

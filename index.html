@@ -443,10 +443,15 @@
         }
 
         .desktop-icon img {
-            width: 32px;
-            height: 32px;
+            width: 40px;
+            height: 40px;
             image-rendering: pixelated;
             margin-bottom: 4px;
+        }
+
+        .desktop-icon:first-child img {
+            width: 40px !important;
+            height: 40px !important;
         }
 
         .desktop-icon-label {
@@ -467,8 +472,21 @@
         }
 
         .desktop-icon-img {
+            width: 40px;
+            height: 40px;
             margin-bottom: 4px;
             image-rendering: pixelated;
+        }
+        
+        /* Update My Computer icon specifically */
+        .desktop-icon:first-child {
+            margin-bottom: 6px;
+        }
+        
+        .desktop-icon:first-child img {
+            content: none;
+            width: 40px;
+            height: 40px;
         }
     </style>
 </head>
@@ -476,7 +494,7 @@
     <!-- Desktop Icons -->
     <div class="desktop-icons">
         <div class="desktop-icon">
-            <img src="icons/my-computer.png" alt="My Computer" style="width: 32px; height: 32px; image-rendering: pixelated;">
+            <img src="icons/my-computer.png" alt="My Computer" style="width: 40px; height: 40px; image-rendering: pixelated;">
             <div class="desktop-icon-label">My Computer</div>
         </div>
         <div class="desktop-icon">

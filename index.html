@@ -59,7 +59,7 @@
             left: 10px;
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 20px;
             z-index: 1;
         }
 
@@ -92,13 +92,76 @@
             padding: 1px 2px;
         }
 
-        .desktop-icon:hover {
-            background-color: rgba(0, 0, 128, 0.3);
+        .desktop-icon:hover .desktop-icon-label {
+            color: black;
+            background-color: white;
+            text-shadow: none;
         }
 
-        .desktop-icon:hover .desktop-icon-label {
-            color: white;
-            background-color: #000080;
+        /* Taskbar */
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 28px;
+            background-color: var(--win-gray);
+            border-top: 1px solid var(--win-white);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2px;
+            z-index: 1000;
+        }
+
+        .start-button {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            background-color: var(--win-gray);
+            border: 2px solid;
+            border-color: var(--win-white) var(--win-darker-gray) var(--win-darker-gray) var(--win-white);
+            padding: 2px 4px;
+            height: 22px;
+            cursor: pointer;
+            margin-left: 2px;
+        }
+
+        .start-button:active {
+            border-color: var(--win-darker-gray) var(--win-white) var(--win-white) var(--win-darker-gray);
+            padding: 3px 3px 1px 5px;
+        }
+
+        .start-button-icon {
+            width: 16px;
+            height: 16px;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAHtJREFUOI3t0jEKwkAQheF/1sLGE3gAS29h4QG0FEEsrYKVhbW38AoewcorWFoIgpVoYWMhLCYQdNHGfM3OvJ15s8Mf0EHIz9KJEU6BbwwxwzJwP8YC98D/ajNc0MQFz4zOaOGVUZxwhbXoDzs4J/ZU2GKNJnpYYY9dZPsBEK0tHOU7Gz4AAAAASUVORK5CYII=');
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .start-button span:last-child {
+            font-weight: bold;
+            font-size: 11px;
+            line-height: 1;
+        }
+
+        .system-tray {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 4px;
+            border-left: 1px solid var(--win-dark-gray);
+            border-top: 1px solid var(--win-dark-gray);
+            background-color: var(--win-gray);
+            height: 22px;
+            margin-right: 2px;
+        }
+
+        .system-clock {
+            font-size: 11px;
+            line-height: 1;
+            padding: 1px 2px;
         }
 
         /* Minesweeper Window */
@@ -152,6 +215,43 @@
             cursor: pointer;
             padding: 0;
             line-height: 1;
+            position: relative;
+        }
+
+        .window-button:active {
+            border-color: var(--win-darker-gray) var(--win-white) var(--win-white) var(--win-darker-gray);
+            padding: 1px 0 0 1px;
+        }
+
+        .window-button.minimize::before {
+            content: "";
+            width: 8px;
+            height: 2px;
+            background-color: black;
+            position: absolute;
+            bottom: 2px;
+            left: 3px;
+        }
+
+        .window-button.maximize::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border: 1px solid black;
+            position: absolute;
+            top: 2px;
+            left: 3px;
+            box-sizing: border-box;
+        }
+
+        .window-button.close::before {
+            content: "×";
+            position: absolute;
+            top: 0;
+            left: 4px;
+            font-size: 12px;
+            line-height: 12px;
+            color: black;
         }
 
         /* Game Area */
@@ -194,11 +294,11 @@
 
         .mines-counter, .timer {
             background-color: black;
-            color: var(--win-red);
+            color: #ff0000;
             border: 1px solid var(--win-dark-gray);
             width: 39px;
             text-align: right;
-            font-family: "Digital", monospace;
+            font-family: 'Digital', monospace;
             font-weight: normal;
             font-size: 20px;
             padding: 0 3px;
@@ -395,6 +495,12 @@
         .win95-footer {
             font-size: 12px;
         }
+
+        /* LED Display */
+        @font-face {
+            font-family: 'Digital';
+            src: url('https://fonts.cdnfonts.com/css/digital-7-mono') format('woff2');
+        }
     </style>
 </head>
 <body>
@@ -422,22 +528,24 @@
         </div>
     </div>
     
-    <!-- Windows 95 Start Button -->
-    <div class="start-button">
-        <span class="start-button-icon"></span>
-        <span>Start</span>
+    <!-- Taskbar -->
+    <div class="taskbar">
+        <div class="start-button">
+            <span class="start-button-icon"></span>
+            <span>Start</span>
+        </div>
+        <div class="system-tray">
+            <div class="system-clock" id="system-clock">5:22 PM</div>
+        </div>
     </div>
-
-    <!-- System Tray with Clock -->
-    <div class="system-clock" id="system-clock">8:25 PM</div>
 
     <div class="container">
         <div class="header">
             <div class="window-title">Minesweeper</div>
             <div class="window-controls">
-                <div class="window-button">_</div>
-                <div class="window-button">□</div>
-                <div class="window-button">×</div>
+                <button class="window-button minimize"></button>
+                <button class="window-button maximize"></button>
+                <button class="window-button close"></button>
             </div>
         </div>
         

@@ -40,26 +40,23 @@
 
         body {
             background-color: #008080;
-            background-image: url('win95-desktop.png');
             color: black;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            margin: 0;
+            padding: 0;
             min-height: 100vh;
-            overflow-x: hidden;
-            padding-bottom: 50px;
+            min-width: 100vw;
+            overflow: hidden;
+            position: relative;
         }
 
         /* Desktop Icons */
         .desktop-icons {
             position: fixed;
-            top: 10px;
-            left: 10px;
+            top: 5px;
+            left: 5px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 5px;
             z-index: 1;
         }
 
@@ -67,15 +64,15 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 75px;
+            width: 64px;
             text-align: center;
             cursor: pointer;
             padding: 2px;
         }
 
         .desktop-icon img {
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             image-rendering: pixelated;
             image-rendering: -moz-crisp-edges;
             image-rendering: crisp-edges;
@@ -90,12 +87,23 @@
             text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
             line-height: 1.2;
             padding: 1px 2px;
+            width: 100%;
         }
 
         .desktop-icon:hover .desktop-icon-label {
             color: black;
             background-color: white;
             text-shadow: none;
+        }
+
+        /* Container positioning */
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -52%);
+            margin: 0;
+            padding: 1px;
         }
 
         /* Taskbar */
@@ -112,6 +120,7 @@
             justify-content: space-between;
             padding: 2px;
             z-index: 1000;
+            width: 100vw;
         }
 
         .start-button {
@@ -475,7 +484,7 @@
         /* Welcome Text */
         .win95-text-container {
             position: fixed;
-            bottom: 40px;
+            bottom: 45px;
             left: 50%;
             transform: translateX(-50%);
             text-align: center;
@@ -484,16 +493,19 @@
             z-index: 1;
             background: none;
             padding: 0;
+            width: 100%;
         }
 
         .win95-marquee-content {
             font-size: 14px;
             font-weight: bold;
             margin-bottom: 4px;
+            text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
         }
 
         .win95-footer {
             font-size: 12px;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
         }
 
         /* LED Display */

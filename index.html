@@ -446,12 +446,10 @@
             width: 40px;
             height: 40px;
             image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            -ms-interpolation-mode: nearest-neighbor;
             margin-bottom: 4px;
-        }
-
-        .desktop-icon:first-child img {
-            width: 40px !important;
-            height: 40px !important;
         }
 
         .desktop-icon-label {
@@ -460,6 +458,7 @@
             text-align: center;
             text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
             line-height: 1.2;
+            padding: 1px 2px;
         }
 
         .desktop-icon:hover {
@@ -471,22 +470,17 @@
             background-color: #000080;
         }
 
-        .desktop-icon-img {
-            width: 40px;
-            height: 40px;
-            margin-bottom: 4px;
-            image-rendering: pixelated;
-        }
-        
-        /* Update My Computer icon specifically */
-        .desktop-icon:first-child {
-            margin-bottom: 6px;
-        }
-        
+        /* Remove any conflicting styles */
         .desktop-icon:first-child img {
-            content: none;
-            width: 40px;
-            height: 40px;
+            content: none !important;
+        }
+
+        .icon-mycomputer {
+            background-image: none !important;
+        }
+
+        .desktop-icon-img {
+            display: none !important;
         }
     </style>
 </head>
@@ -494,7 +488,7 @@
     <!-- Desktop Icons -->
     <div class="desktop-icons">
         <div class="desktop-icon">
-            <img src="icons/my-computer.png" alt="My Computer" style="width: 40px; height: 40px; image-rendering: pixelated;">
+            <img src="icons/my-computer.png" alt="My Computer">
             <div class="desktop-icon-label">My Computer</div>
         </div>
         <div class="desktop-icon">

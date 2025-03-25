@@ -96,9 +96,8 @@
         }
 
         .desktop-icon:hover .desktop-icon-label {
-            color: black;
-            background-color: white;
-            text-shadow: none;
+            background-color: navy;
+            color: white;
         }
 
         /* Container positioning */
@@ -106,10 +105,11 @@
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -55%);
+            transform: translate(-50%, -52%);
             margin: 0;
             padding: 1px;
             z-index: 2;
+            box-shadow: 1.5px 1.5px 3px rgba(0, 0, 0, 0.3);
         }
 
         /* Taskbar */
@@ -276,6 +276,7 @@
             flex-direction: column;
             align-items: center;
             gap: 4px;
+            background-color: var(--win-gray);
         }
 
         .game-controls {
@@ -353,6 +354,7 @@
             line-height: 1;
         }
 
+        /* Game Board */
         .game-board {
             display: grid;
             grid-template-columns: repeat(var(--columns), var(--cell-size));

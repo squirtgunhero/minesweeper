@@ -105,11 +105,15 @@
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -52%);
+            transform: translate(-50%, -50%);
             margin: 0;
             padding: 1px;
             z-index: 2;
             box-shadow: 1.5px 1.5px 3px rgba(0, 0, 0, 0.3);
+            background-color: var(--win-gray);
+            border: 3px solid;
+            border-color: var(--win-white) var(--win-darker-gray) var(--win-darker-gray) var(--win-white);
+            width: fit-content;
         }
 
         /* Taskbar */
@@ -181,13 +185,6 @@
 
         /* Minesweeper Window */
         .container {
-            background-color: var(--win-gray);
-            border: 3px solid;
-            border-color: var(--win-white) var(--win-darker-gray) var(--win-darker-gray) var(--win-white);
-            padding: 1px;
-            margin: 0 auto;
-            box-shadow: 1.5px 1.5px 3px rgba(0, 0, 0, 0.3);
-            position: relative;
             transform: translateY(-20px);
             width: fit-content;
         }
